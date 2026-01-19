@@ -1,23 +1,16 @@
 const mongoose = require('mongoose');
 
 const incendioSchema = new mongoose.Schema({
-    // index: true acelera as pesquisas por código
     Codigo: { type: String, required: true, unique: true, index: true, trim: true }, 
-
-    Estado: { 
-        type: String, 
-        enum: ['Em Curso', 'Em Resolução', 'Concluido', 'Vigilância'],
-        default: 'Concluido',
-        trim: true
-    },
-
-    // index: true é CRÍTICO para filtrar por ano/mês nas estatísticas
+    Estado: { type: String, default: 'Concluido', trim: true },
     DataHoraInicio: { type: Date, required: true, index: true }, 
-    
     DuracaoHoras: { type: Number },
-    
+
+    Ano: { type: Number, index: true }, 
+    Mes: { type: Number, index: true }, 
+    EficienciaCombate: { type: Number }, 
+
     Localizacao: {
-        // Índices aqui ajudam na query "Top N Regiões Críticas"
         Distrito: { type: String, trim: true, index: true }, 
         Concelho: { type: String, trim: true, index: true },
         Freguesia: { type: String, trim: true }
@@ -37,7 +30,7 @@ const incendioSchema = new mongoose.Schema({
     }
 }, { 
     collection: 'incendios',
-    timestamps: true // Adiciona automaticamente createdAt e updatedAt
+    timestamps: true 
 });
 
 module.exports = mongoose.model('Incendio', incendioSchema);
