@@ -1,0 +1,5 @@
+node_modules/
+.env
+.DS_Store
+# Se quiseres proteger a tua password do Mongo, descomenta a linha abaixo:
+# gemini/config/db.js

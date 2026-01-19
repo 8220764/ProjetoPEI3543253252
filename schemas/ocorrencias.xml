@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocumentoOcorrencia>
+    <EstadoOcorrencia>Concluído</EstadoOcorrencia>
+
+    <CodigoIncidente>20240015</CodigoIncidente> 
+    <DataHoraInicio>2024-08-15T14:30:00</DataHoraInicio> 
+    <DuracaoHoras>5.5</DuracaoHoras> 
+    
+    <Geografia>
+        <Distrito>Porto</Distrito>
+        <Concelho>Amarante</Concelho>
+        <Freguesia>Vila Meã</Freguesia>
+    </Geografia>
+
+    <AreasArdidas> 
+        <AreaTotal_ha>12.85</AreaTotal_ha> 
+        <AreaPovoamento_ha>8.20</AreaPovoamento_ha> 
+        <AreaMato_ha>4.65</AreaMato_ha> 
+        <AreaAgricola_ha>0.00</AreaAgricola_ha> 
+        </AreasArdidas>
+
+    <CausaProvavel>
+        <TipoCausa>Negligente</TipoCausa> 
+        <DescricaoCausa>Queima de amontoados que se descontrolou</DescricaoCausa> 
+        </CausaProvavel>
+
+</DocumentoOcorrencia>

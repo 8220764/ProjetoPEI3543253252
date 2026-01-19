@@ -1,0 +1,56 @@
+{
+    "dataset": "Histórico de Incêndios",
+    "description": "Registo de ocorrências de incêndios florestais.",
+    "fields": [
+        {
+            "name": "id_incendio",
+            "type": "Integer",
+            "description": "Identificador único do incidente."
+        },
+        {
+            "name": "data",
+            "type": "Timestamp (YYYY-MM-DD HH:MM:SS)",
+            "description": "Data completa do início do incêndio."
+        },
+        {
+            "name": "hora",
+            "type": "Integer",
+            "description": "Hora de início (simplificada)."
+        },
+        {
+            "name": "id_localizacao",
+            "type": "Integer",
+            "description": "id para o catálogo de localizações."
+        },
+        {
+            "name": "id_causa",
+            "type": "Integer",
+            "description": "id para o catálogo de causas."
+        },
+        {
+            "name": "duracao_horas",
+            "type": "Decimal",
+            "description": "Duração do incêndio em horas."
+        },
+        {
+            "name": "areaTotal_ha",
+            "type": "Decimal",
+            "description": "Área total ardida em hectares."
+        },
+        {
+            "name": "areaPov_ha",
+            "type": "Decimal",
+            "description": "Área de povoamento florestal ardida em hectares."
+        },
+        {
+            "name": "areaMato_ha",
+            "type": "Decimal",
+            "description": "Área de mato ardida em hectares."
+        },
+        {
+            "name": "areaAgric_ha",
+            "type": "Decimal",
+            "description": "Área agrícola ardida em hectares."
+        }
+    ]
+}

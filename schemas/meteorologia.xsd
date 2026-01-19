@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="Meteorologia">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="IdEstacao" type="xs:integer"/>
+
+                <xs:element name="Data" type="xs:date"/>
+
+                <xs:element name="Temperatura">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Maxima" type="xs:decimal"/> <xs:element name="Minima" type="xs:decimal"/> <xs:element name="Media" type="xs:decimal"/>  </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Vento">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="VelocidadeMaxima" type="xs:decimal"/> <xs:element name="RajadaMaxima" type="xs:decimal"/>     <xs:element name="Direcao" type="xs:integer"/>          </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="Precipitacao" type="xs:decimal"/> <xs:element name="PressaoAtmosferica" type="xs:decimal" minOccurs="0"/> <xs:element name="Radiacao" type="xs:decimal" minOccurs="0"/> <xs:element name="Insolacao" type="xs:decimal" minOccurs="0"/> </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -1,0 +1,91 @@
+{
+    "dataset": "Meteorologia Diária",
+    "description": "Registos diários de condições meteorológicas por estação.",
+    "fields": [
+        {
+            "name": "id",
+            "type": "Integer",
+            "description": "Identificador único da leitura."
+        },
+        {
+            "name": "data",
+            "type": "Date (YYYYMMDD)",
+            "description": "Data da medição."
+        },
+        {
+            "name": "year",
+            "type": "Integer",
+            "description": "Ano da medição."
+        },
+        {
+            "name": "gust_max",
+            "type": "Decimal",
+            "description": "Velocidade máxima da rajada de vento (km/h)."
+        },
+        {
+            "name": "is_dry_day",
+            "type": "Boolean",
+            "description": "Indicador se foi um dia seco."
+        },
+        {
+            "name": "is_high_wind_day",
+            "type": "Boolean",
+            "description": "Indicador se foi um dia de vento forte."
+        },
+        {
+            "name": "location_id",
+            "type": "Integer",
+            "description": "Identificador da estação meteorológica."
+        },
+        {
+            "name": "precip_hours",
+            "type": "Decimal",
+            "description": "Número de horas com precipitação."
+        },
+        {
+            "name": "precip_sum",
+            "type": "Decimal",
+            "description": "Precipitação total acumulada (mm)."
+        },
+        {
+            "name": "pressure_msl",
+            "type": "Decimal",
+            "description": "Pressão atmosférica ao nível médio do mar (hPa)."
+        },
+        {
+            "name": "radiation",
+            "type": "Decimal",
+            "description": "Radiação solar."
+        },
+        {
+            "name": "sunshine",
+            "type": "Decimal",
+            "description": "Duração da insolação (horas)."
+        },
+        {
+            "name": "temp_max",
+            "type": "Decimal",
+            "description": "Temperatura máxima do ar (°C)."
+        },
+        {
+            "name": "temp_mean",
+            "type": "Decimal",
+            "description": "Temperatura média do ar (°C)."
+        },
+        {
+            "name": "temp_min",
+            "type": "Decimal",
+            "description": "Temperatura mínima do ar (°C)."
+        },
+        {
+            "name": "wind_dir",
+            "type": "Integer",
+            "description": "Direção do vento (graus)."
+        },
+        {
+            "name": "wind_max",
+            "type": "Decimal",
+            "description": "Velocidade máxima do vento (km/h)."
+        }
+    ]
+}

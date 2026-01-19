@@ -1,0 +1,26 @@
+{
+    "dataset": "Causas de Incêndio",
+    "description": "Catálogo de classificação de causas de incêndio.",
+    "fields": [
+        {
+            "name": "id_causa",
+            "type": "Integer",
+            "description": "Identificador único da causa."
+        },
+        {
+            "name": "tipo_causa",
+            "type": "String",
+            "description": "Classificação macro da causa (ex: Intencional, Negligente)."
+        },
+        {
+            "name": "grupo_causa",
+            "type": "String",
+            "description": "Agrupamento temático da causa."
+        },
+        {
+            "name": "descricao_causa",
+            "type": "String",
+            "description": "Descrição detalhada da causa específica."
+        }
+    ]
+}

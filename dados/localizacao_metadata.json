@@ -1,0 +1,26 @@
+{
+    "dataset": "Localizações Geográficas",
+    "description": "Catálogo de localizações administrativas (Distrito, Concelho, Freguesia).",
+    "fields": [
+        {
+            "name": "id_localizacao",
+            "type": "Integer",
+            "description": "Identificador único da localização."
+        },
+        {
+            "name": "concelho",
+            "type": "String",
+            "description": "Nome do concelho."
+        },
+        {
+            "name": "distrito",
+            "type": "String",
+            "description": "Nome do distrito."
+        },
+        {
+            "name": "freguesia",
+            "type": "String",
+            "description": "Nome da freguesia."
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Meteorologia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="meteorologia.xsd">
+    <IdEstacao>129</IdEstacao>
+    <Data>2024-01-02</Data>
+    <Temperatura>
+        <Maxima>13.4</Maxima>
+        <Minima>9.1</Minima>
+        <Media>11.25</Media>
+    </Temperatura>
+    <Vento>
+        <VelocidadeMaxima>25.8</VelocidadeMaxima>
+        <RajadaMaxima>70.2</RajadaMaxima>
+        <Direcao>184</Direcao>
+    </Vento>
+    <Precipitacao>37.4</Precipitacao>
+    <PressaoAtmosferica>1015.2</PressaoAtmosferica>
+    <Radiacao>0.59</Radiacao>
+    <Insolacao>0.0</Insolacao>
+</Meteorologia>

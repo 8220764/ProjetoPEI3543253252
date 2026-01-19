@@ -1,0 +1,16 @@
+{
+    "dataset": "Bombeiros",
+    "description": "Registo de recursos humanos (bombeiros) disponíveis por localização administrativa (Município).",
+    "fields": [
+        {
+            "name": "Concelho/municipio",
+            "type": "String",
+            "description": "Nome do município."
+        },
+        {
+            "name": "Numero_Bombeiros",
+            "type": "Integer",
+            "description": "Número total de bombeiros afetos a este município."
+        }
+    ]
+}
