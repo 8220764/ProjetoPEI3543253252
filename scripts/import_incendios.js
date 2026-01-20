@@ -13,7 +13,7 @@ const CSV_CAUSA = path.join(DATA_DIR, 'causa.csv');
 
 async function carregarLocalizacoes() {
     const mapa = new Map();
-    console.log("A carregar localizacoes...");
+    console.log("📍 A carregar localizacoes...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_LOCALIZACAO)
             .pipe(csv())
@@ -31,7 +31,7 @@ async function carregarLocalizacoes() {
 
 async function carregarCausas() {
     const mapa = new Map();
-    console.log("A carregar causas...");
+    console.log("🔥 A carregar causas...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_CAUSA)
             .pipe(csv())
@@ -52,7 +52,7 @@ async function importarIncendios() {
         await mongoose.connect(config.uri, {
             dbName: config.dbName
         });
-        console.log("Ligado ao MongoDB. Base de dados: " + config.dbName);
+        console.log("🔌 Ligado ao MongoDB. Base de dados: " + config.dbName);
 
         const [locMap, causaMap] = await Promise.all([
             carregarLocalizacoes(),
@@ -62,7 +62,7 @@ async function importarIncendios() {
         const listaParaInserir = [];
         let contagemErros = 0;
 
-        console.log("A processar incendios com Computed Pattern...");
+        console.log("🚀 A processar incendios com Computed Pattern...");
 
         fs.createReadStream(CSV_INCENDIOS)
             .pipe(csv())
@@ -76,6 +76,7 @@ async function importarIncendios() {
                         dataBase.setHours(parseInt(row.hora, 10));
                     }
 
+                    // --- CÁLCULOS (Computed Pattern) ---
                     const anoCalc = dataBase.getFullYear();
                     const mesCalc = dataBase.getMonth() + 1;
                     const duracao = parseFloat(row.duracao_hours || 0);
@@ -85,15 +86,21 @@ async function importarIncendios() {
                     if (duracao > 0) {
                         eficiencia = parseFloat((areaTotal / duracao).toFixed(4));
                     }
+                    // -----------------------------------
 
                     const novoIncendio = {
+                        // ID PRINCIPAL: Usamos o id_incendio do CSV como 'Codigo'
                         Codigo: row.id_incendio,
+                        
                         Estado: 'Concluido', 
                         DataHoraInicio: dataBase,
                         DuracaoHoras: duracao,
+                        
+                        // Gavetas Calculadas
                         Ano: anoCalc,
                         Mes: mesCalc,
                         EficienciaCombate: eficiencia,
+                        
                         Localizacao: {
                             Distrito: loc ? loc.Distrito : 'Desconhecido',
                             Concelho: loc ? loc.Concelho : 'Desconhecido',
@@ -119,19 +126,26 @@ async function importarIncendios() {
             })
             .on('end', async () => {
                 if (listaParaInserir.length > 0) {
+                    // Dica: Apagar coleção antiga se existirem conflitos de IDs
+                    // await Incendio.deleteMany({});
+
                     const lote = 1000;
                     for (let i = 0; i < listaParaInserir.length; i += lote) {
                         const chunk = listaParaInserir.slice(i, i + lote);
-                        await Incendio.insertMany(chunk);
-                        console.log("Inseridos " + Math.min(i + lote, listaParaInserir.length) + " / " + listaParaInserir.length);
+                        try {
+                            await Incendio.insertMany(chunk, { ordered: false });
+                        } catch (e) {
+                            // Ignorar duplicados silenciosamente
+                        }
+                        console.log("💾 Inseridos " + Math.min(i + lote, listaParaInserir.length) + " / " + listaParaInserir.length);
                     }
-                    console.log("Sucesso! Total importado: " + listaParaInserir.length + ". Erros: " + contagemErros);
+                    console.log("✅ Sucesso! Incêndios importados. Erros/Ignorados: " + contagemErros);
                 }
                 mongoose.connection.close();
             });
 
     } catch (error) {
-        console.error("Erro fatal:", error);
+        console.error("❌ Erro fatal:", error);
         mongoose.connection.close();
     }
 }

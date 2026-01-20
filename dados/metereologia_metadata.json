@@ -33,9 +33,19 @@
             "description": "Indicador se foi um dia de vento forte."
         },
         {
-            "name": "location_id",
-            "type": "Integer",
-            "description": "Identificador da estação meteorológica."
+            "name": "municipality",
+            "type": "String",
+            "description": "Município da estação meteorológica."
+        },
+        {
+            "name": "parish",
+            "type": "String",
+            "description": "Freguesia da estação meteorológica."
+        },
+        {
+            "name": "district",
+            "type": "String",
+            "description": "Distrito da estação meteorológica."
         },
         {
             "name": "precip_hours",

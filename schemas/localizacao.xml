@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CatalogoLocalizacoes>
+    <Localizacao>
+        <id_localizacao>1001</id_localizacao>
+        <distrito>AVEIRO</distrito>
+        <concelho>AGUEDA</concelho>
+        <freguesia>Aguada de Cima</freguesia>
+    </Localizacao>
+
+    <Localizacao>
+        <id_localizacao>1401</id_localizacao>
+        <distrito>SANTAREM</distrito>
+        <concelho>ABRANTES</concelho>
+        <freguesia>Bemposta</freguesia>
+    </Localizacao>
+</CatalogoLocalizacoes>
