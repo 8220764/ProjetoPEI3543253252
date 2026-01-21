@@ -5,5 +5,5 @@ const meteorologiaController = require('../controllers/meteorologiaController');
 router.get('/', meteorologiaController.listarTodos);
 
 router.get('/stats/estacoes', meteorologiaController.statsPorEstacao);
-
+router.get('/stats/temperatura-regiao', meteorologiaController.statsTemperaturaPorRegiao);
 module.exports = router;

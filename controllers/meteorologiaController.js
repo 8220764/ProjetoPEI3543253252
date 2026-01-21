@@ -51,3 +51,59 @@ exports.statsPorEstacao = async (req, res) => {
         res.status(500).json({ erro: "Erro nas estatísticas", detalhe: error.message });
     }
 };
+
+//QUERY: Análise de Temperaturas por Região (Média, Máxima, Mínima)
+exports.statsTemperaturaPorRegiao = async (req, res) => {
+    try {
+        const { dataInicio, dataFim, agruparPor } = req.query;
+
+        const matchStage = {};
+        if (dataInicio && dataFim) {
+            matchStage.Data = {
+                $gte: new Date(dataInicio),
+                $lte: new Date(dataFim)
+            };
+        }
+
+        let groupField = "$Localizacao.Distrito";
+        if (agruparPor && agruparPor.toLowerCase() === 'concelho') {
+            groupField = "$Localizacao.Concelho";
+        }
+
+        const stats = await Meteorologia.aggregate([
+            { $match: matchStage },
+            {
+                $group: {
+                    _id: groupField,
+                    tempMediaGeral: { $avg: "$Temperatura.Media" },
+                    tempMaximaAbsoluta: { $max: "$Temperatura.Maxima" },
+                    tempMinimaAbsoluta: { $min: "$Temperatura.Minima" },
+                    totalRegistos: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    Regiao: "$_id",
+                    TempMedia: { $round: ["$tempMediaGeral", 1] }, 
+                    TempMaxima: "$tempMaximaAbsoluta",
+                    TempMinima: "$tempMinimaAbsoluta",
+                    TotalDias: "$totalRegistos"
+                }
+            },
+            { $sort: { TempMedia: -1 } } 
+        ]);
+
+        res.json({
+            periodo: {
+                inicio: dataInicio || "Inicio dos Tempos",
+                fim: dataFim || "Hoje"
+            },
+            agrupamento: agruparPor || "Distrito",
+            resultados: stats
+        });
+
+    } catch (error) {
+        res.status(500).json({ erro: "Erro na análise de temperaturas", detalhe: error.message });
+    }
+};
