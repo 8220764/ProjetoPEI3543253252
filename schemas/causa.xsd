@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  
   <xs:element name="CatalogoCausas">
     <xs:complexType>
       <xs:sequence>
-        
-        <xs:element name="Causa" maxOccurs="unbounded">
+        <xs:element name="Causa">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="id_causa" type="xs:integer"/>
@@ -15,9 +13,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
 </xs:schema>

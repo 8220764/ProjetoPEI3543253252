@@ -11,11 +11,11 @@ const CSV_FILE = path.join(__dirname, '../dados/localizacao.csv');
 async function importarLocalizacoes() {
     try {
         await mongoose.connect(config.uri, { dbName: config.dbName });
-        console.log("🔌 Ligado ao MongoDB (Localizações).");
+        console.log(" Ligado ao MongoDB (Localizações).");
 
         const lista = [];
 
-        console.log("🌍 A ler o catálogo de Localizações...");
+        console.log(" A ler o catálogo de Localizações...");
 
         fs.createReadStream(CSV_FILE)
             .pipe(csv())
@@ -25,14 +25,13 @@ async function importarLocalizacoes() {
                         Id: parseInt(row.id_localizacao, 10),
                         Distrito: row.distrito,
                         Concelho: row.concelho,
-                        // Freguesia é opcional, se vier vazia não faz mal
                         Freguesia: row.freguesia || "" 
                     });
                 }
             })
             .on('end', async () => {
                 if (lista.length > 0) {
-                    // Inserir em lotes de 2000 para não encravar a memória se forem muitas freguesias
+                    
                     const lote = 2000;
                     let inseridos = 0;
                     
@@ -41,18 +40,18 @@ async function importarLocalizacoes() {
                         try {
                             await Localizacao.insertMany(chunk, { ordered: false });
                             inseridos += chunk.length;
-                            console.log(`💾 Guardados ${Math.min(i + lote, lista.length)} / ${lista.length}`);
+                            console.log(` Guardados ${Math.min(i + lote, lista.length)} / ${lista.length}`);
                         } catch (e) {
-                            console.log("⚠️ Lote com duplicados (ignorados).");
+                            console.log(" Lote com duplicados (ignorados).");
                         }
                     }
-                    console.log(`✅ Importação de Localizações concluída!`);
+                    console.log(` Importação de Localizações concluída!`);
                 }
                 mongoose.connection.close();
             });
 
     } catch (error) {
-        console.error("❌ Erro:", error);
+        console.error(" Erro:", error);
         mongoose.connection.close();
     }
 }

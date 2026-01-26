@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CatalogoCausas>
     <Causa>
-        <id_causa>20</id_causa>
-        <tipo_causa>Natural</tipo_causa>
-        <grupo_causa>Incendios Naturais</grupo_causa>
-        <descricao_causa>Trovoada seca</descricao_causa>
-    </Causa>
-    
-    <Causa>
-        <id_causa>123</id_causa>
-        <tipo_causa>Negligencia</tipo_causa>
-        <grupo_causa>Uso do fogo</grupo_causa>
-        <descricao_causa>Queima de sobrantes</descricao_causa>
+        <id_causa>999</id_causa>
+        <tipo_causa>Negligente</tipo_causa>
+        <grupo_causa>Uso do Fogo</grupo_causa>
+        <descricao_causa>Queima de sobrantes mal apagada</descricao_causa>
     </Causa>
 </CatalogoCausas>

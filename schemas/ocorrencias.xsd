@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="DocumentoOcorrencia">
-    <xs:complexType>
-      <xs:sequence>
-        
-        <xs:element name="EstadoOcorrencia" type="xs:string"/> <xs:element name="CodigoIncidente" type="xs:integer"/> <xs:element name="DataHoraInicio" type="xs:dateTime"/> <xs:element name="DuracaoHoras" type="xs:decimal" minOccurs="0"/> <xs:element name="Geografia">
-          <xs:complexType>
+    <xs:element name="LocalizacaoId" type="xs:integer"/>
+    <xs:element name="CausaId" type="xs:integer"/>
+
+    <xs:element name="AreasArdidas">
+        <xs:complexType>
             <xs:sequence>
-              <xs:element name="Distrito" type="xs:string"/>
-              <xs:element name="Concelho" type="xs:string"/>
-              <xs:element name="Freguesia" type="xs:string"/>
+                <xs:element name="AreaTotal_ha" type="xs:decimal"/>
+                <xs:element name="AreaPovoamento_ha" type="xs:decimal"/>
+                <xs:element name="AreaMato_ha" type="xs:decimal"/>
+                <xs:element name="AreaAgricola_ha" type="xs:decimal"/>
             </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        </xs:complexType>
+    </xs:element>
 
-        <xs:element name="AreasArdidas">
-          <xs:complexType>
+    <xs:element name="DocumentoOcorrencia">
+        <xs:complexType>
             <xs:sequence>
-              <xs:element name="AreaTotal_ha" type="xs:decimal"/> <xs:element name="AreaPovoamento_ha" type="xs:decimal"/> <xs:element name="AreaMato_ha" type="xs:decimal"/> <xs:element name="AreaAgricola_ha" type="xs:decimal"/> </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="CausaProvavel">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="TipoCausa" type="xs:string"/> <xs:element name="DescricaoCausa" type="xs:string"/> </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+                <xs:element name="EstadoOcorrencia" type="xs:string"/>
+                <xs:element name="CodigoIncidente" type="xs:string"/>
+                <xs:element name="DataHoraInicio" type="xs:dateTime"/>
+                <xs:element name="DuracaoHoras" type="xs:decimal"/>
+                
+                <xs:element ref="LocalizacaoId"/>
+                <xs:element ref="AreasArdidas"/>
+                <xs:element ref="CausaId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>

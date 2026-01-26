@@ -8,8 +8,18 @@ const Meteorologia = require('../models/meteorologia');
 
 const CSV_METEO = path.join(__dirname, '../dados/metereologia.csv');
 
+const parseNumber = (val) => {
+    if (val === undefined || val === null || val.trim() === '') return null;
+    const num = parseFloat(val);
+    return isNaN(num) ? null : num;
+};
+
+const parseBool = (val) => {
+    if (!val) return false;
+    return val.toLowerCase() === 'true';
+};
+
 const parseDataCSV = (dataStr) => {
-    // O teu novo CSV usa o formato YYYYMMDD (ex: 20240102)
     if (!dataStr || dataStr.length !== 8) return null;
     const ano = dataStr.substring(0, 4);
     const mes = dataStr.substring(4, 6);
@@ -27,10 +37,10 @@ function getEstacaoDoAno(mes) {
 async function importarMeteo() {
     try {
         await mongoose.connect(config.uri, { dbName: config.dbName });
-        console.log("🔌 Ligado ao MongoDB.");
+        console.log(" Ligado ao MongoDB.");
 
         const listaParaInserir = [];
-        console.log("🌦️ A ler NOVO CSV de meteorologia...");
+        console.log(" A ler NOVO CSV de meteorologia...");
 
         fs.createReadStream(CSV_METEO)
             .pipe(csv())
@@ -42,7 +52,6 @@ async function importarMeteo() {
                         const mesAtual = dataFormatada.getMonth() + 1;
 
                         listaParaInserir.push({
-                            // --- LOCALIZAÇÃO (Novo mapeamento) ---
                             Localizacao: {
                                 Distrito: row.district,
                                 Concelho: row.municipality,
@@ -53,36 +62,38 @@ async function importarMeteo() {
                             Mes: mesAtual,
                             EstacaoDoAno: getEstacaoDoAno(mesAtual),
 
-                            // --- INDICADORES (Novos campos) ---
                             Indicadores: {
-                                DiaSeco: row.is_dry_day === 'true',
-                                VentoForte: row.is_high_wind_day === 'true'
+                                DiaSeco: parseBool(row.is_dry_day),
+                                VentoForte: parseBool(row.is_high_wind_day)
                             },
                             
                             Temperatura: {
-                                Maxima: parseFloat(row.temp_max || 0),
-                                Minima: parseFloat(row.temp_min || 0),
-                                Media: parseFloat(row.temp_mean || 0)
+                                Maxima: parseNumber(row.temp_max),
+                                Minima: parseNumber(row.temp_min),
+                                Media: parseNumber(row.temp_mean)
                             },
+                            
                             Vento: {
-                                VelocidadeMaxima: parseFloat(row.wind_max || 0),
-                                RajadaMaxima: parseFloat(row.gust_max || 0),
+                                VelocidadeMaxima: parseNumber(row.wind_max),
+                                RajadaMaxima: parseNumber(row.gust_max),
                                 Direcao: parseInt(row.wind_dir || 0, 10)
                             },
+                            
                             Atmosfera: {
-                                Precipitacao: parseFloat(row.precip_sum || 0),
-                                Pressao: parseFloat(row.pressure_msl || 0),
-                                Radiacao: parseFloat(row.radiation || 0),
-                                Insolacao: parseFloat(row.sunshine || 0)
+                                Precipitacao: parseNumber(row.precip_sum),      
+                                PrecipitacaoHoras: parseNumber(row.precip_hours), 
+                                Pressao: parseNumber(row.pressure_msl),
+                                Radiacao: parseNumber(row.radiation),
+                                Insolacao: parseNumber(row.sunshine)
                             }
                         });
                     }
-                } catch (err) { }
+                } catch (err) { 
+                    console.error("Erro na linha:", err.message);
+                }
             })
             .on('end', async () => {
                 if (listaParaInserir.length > 0) {
-                    // IMPORTANTE: Como a estrutura mudou radicalmente, apaga a coleção antiga!
-                    // await Meteorologia.deleteMany({}); 
                     
                     const lote = 2000;
                     for (let i = 0; i < listaParaInserir.length; i += lote) {
@@ -90,17 +101,17 @@ async function importarMeteo() {
                         try {
                             await Meteorologia.insertMany(chunk, { ordered: false }); 
                         } catch (e) {
-                            // Ignora duplicados
+                            
                         }
-                        console.log(`💾 Processados ${Math.min(i + lote, listaParaInserir.length)} / ${listaParaInserir.length}`);
+                        console.log(` Processados ${Math.min(i + lote, listaParaInserir.length)} / ${listaParaInserir.length}`);
                     }
-                    console.log("✅ Importação da NOVA Meteorologia concluída!");
+                    console.log(" Importação da Meteorologia concluída!");
                 }
                 mongoose.connection.close();
             });
 
     } catch (error) {
-        console.error("❌ Erro:", error);
+        console.error(" Erro fatal:", error);
         mongoose.connection.close();
     }
 }

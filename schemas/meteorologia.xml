@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Meteorologia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="meteorologia.xsd">
-    <IdEstacao>129</IdEstacao>
-    <Data>2024-01-02</Data>
-    <Temperatura>
-        <Maxima>13.4</Maxima>
-        <Minima>9.1</Minima>
-        <Media>11.25</Media>
-    </Temperatura>
-    <Vento>
-        <VelocidadeMaxima>25.8</VelocidadeMaxima>
-        <RajadaMaxima>70.2</RajadaMaxima>
-        <Direcao>184</Direcao>
-    </Vento>
-    <Precipitacao>37.4</Precipitacao>
-    <PressaoAtmosferica>1015.2</PressaoAtmosferica>
-    <Radiacao>0.59</Radiacao>
-    <Insolacao>0.0</Insolacao>
+<Meteorologia>
+    <Registo>
+        <Data>2025-08-17</Data>
+        
+        <LocalizacaoId>86475</LocalizacaoId>
+
+        <Indicadores>
+            <DiaSeco>true</DiaSeco>
+            <VentoForte>false</VentoForte>
+        </Indicadores>
+
+        <Temperatura>
+            <Maxima>34.0</Maxima>
+            <Minima>23.5</Minima>
+            <Media>29.1</Media>
+        </Temperatura>
+
+        <Vento>
+            <VelocidadeMaxima>28.0</VelocidadeMaxima>
+            <RajadaMaxima>50.0</RajadaMaxima>
+            <Direcao>180</Direcao>
+        </Vento>
+
+        <Atmosfera>
+            <PrecipitacaoSoma>0.0</PrecipitacaoSoma>
+            <Pressao>1012</Pressao>
+            <Radiacao>960</Radiacao>
+        </Atmosfera>
+    </Registo>
 </Meteorologia>

@@ -4,5 +4,6 @@ const localizacaoController = require('../controllers/localizacaoController');
 
 // GET /api/localizacoes
 router.get('/', localizacaoController.listarTodas);
+router.post('/', localizacaoController.criar);
 
 module.exports = router;

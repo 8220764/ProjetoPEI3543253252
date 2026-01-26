@@ -19,3 +19,35 @@ exports.listarTodas = async (req, res) => {
         res.status(500).json({ erro: error.message });
     }
 };
+exports.criar = async (req, res) => {
+    try {
+        let dadosRecebidos = req.body;
+
+        if (req.body.CatalogoCausas && req.body.CatalogoCausas.Causa) {
+            dadosRecebidos = req.body.CatalogoCausas.Causa;
+        } 
+        
+        if (Array.isArray(dadosRecebidos)) {
+            dadosRecebidos = dadosRecebidos[0];
+        }
+
+        const novaCausaDados = {
+            Id: dadosRecebidos.id_causa || dadosRecebidos.Id,
+            Tipo: dadosRecebidos.tipo_causa || dadosRecebidos.Tipo,
+            Grupo: dadosRecebidos.grupo_causa || dadosRecebidos.Grupo,
+            Descricao: dadosRecebidos.descricao_causa || dadosRecebidos.Descricao
+        };
+
+        const novaCausa = new Causa(novaCausaDados);
+        await novaCausa.save();
+
+        res.status(201).json({
+            mensagem: "Nova causa adicionada com sucesso!",
+            dados: novaCausa
+        });
+
+    } catch (error) {
+        console.error("Erro Causa:", error);
+        res.status(400).json({ erro: "Erro ao criar causa", detalhe: error.message });
+    }
+};

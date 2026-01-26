@@ -3,7 +3,7 @@ const router = express.Router();
 const bombeirosController = require('../controllers/bombeirosController');
 
 router.get('/', bombeirosController.listarTodos);
-
+router.post('/', bombeirosController.criar);
 router.get('/stats/distritos', bombeirosController.statsPorDistrito);
 
 module.exports = router;

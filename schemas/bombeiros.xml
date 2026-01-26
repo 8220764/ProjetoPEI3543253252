@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RecursosHumanos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="bombeiros.xsd">
+<Bombeiros>
     <Ano>2024</Ano>
-    
-    <Regiao>
-        <Distrito>SANTARÉM</Distrito> 
-        
-        <Concelho>ABRANTES</Concelho>
-        
-        </Regiao>
-    
+    <LocalizacaoId>86475</LocalizacaoId>
     <CapacidadeOperacional>77</CapacidadeOperacional>
-</RecursosHumanos>
+</Bombeiros>

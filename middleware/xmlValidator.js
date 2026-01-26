@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-// Configuração do Parser (XML -> JSON)
+// Configuração do Parser 
 const parser = new XMLParser({
     explicitArray: false,
     ignoreAttributes: false,
@@ -13,7 +13,7 @@ const parser = new XMLParser({
 });
 
 module.exports = async (req, res, next) => {
-    // 1. Verificar se é XML e se tem corpo
+    //  Verifica se é XML e se tem corpo
     const contentType = req.get('Content-Type');
     
     if (contentType && 
@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
 
         console.log(`\n--> [XML Validator] A validar pedido XML na rota: ${req.path}`);
 
-        // 2. Mapeamento das Rotas -> Ficheiros XSD
+        //  Mapeamento das Rotas para ficheiro XSD
         let xsdFile = '';
 
         if (req.path.includes('/incendios')) xsdFile = 'ocorrencias.xsd';
@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
         else if (req.path.includes('/localizacoes')) xsdFile = 'localizacao.xsd';
         else return next(); 
 
-        // Caminho ABSOLUTO para o ficheiro XSD na pasta schemas
+        // Caminho para o ficheiro XSD na pasta schemas
         const schemaPath = path.resolve(__dirname, '../schemas', xsdFile);
 
         if (!fs.existsSync(schemaPath)) {
@@ -44,18 +44,18 @@ module.exports = async (req, res, next) => {
             });
         }
 
-        // 3. Ficheiro Temporário
+        //  Ficheiro Temporário
         const tempXmlPath = path.join(os.tmpdir(), `temp_req_${Date.now()}.xml`);
 
         try {
             const cleanXml = req.body.trim().replace(/^\uFEFF/, '');
             fs.writeFileSync(tempXmlPath, cleanXml, { encoding: 'utf8' });
 
-            // 4. VALIDAR
+            // Validar
             await validator.validateXML({ file: tempXmlPath }, schemaPath);
             console.log(`✅ [XML Validator] Sucesso! XML válido contra ${xsdFile}.`);
 
-            // 5. Converter para JSON
+            //  Converter para JSON
             const parsed = parser.parse(cleanXml);
             req.body = parsed;
             next();

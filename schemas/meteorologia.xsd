@@ -4,25 +4,60 @@
     <xs:element name="Meteorologia">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="IdEstacao" type="xs:integer"/>
-
-                <xs:element name="Data" type="xs:date"/>
-
-                <xs:element name="Temperatura">
+                <xs:element name="Registo" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="Maxima" type="xs:decimal"/> <xs:element name="Minima" type="xs:decimal"/> <xs:element name="Media" type="xs:decimal"/>  </xs:sequence>
+                            <xs:element name="Id" type="xs:integer" minOccurs="0"/>
+                            <xs:element name="Data" type="xs:date"/>
+                            <xs:element name="Ano" type="xs:integer" minOccurs="0"/>
+
+                            <xs:element name="LocalizacaoId" type="xs:integer"/>
+
+                            <xs:element name="Indicadores">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="DiaSeco" type="xs:boolean"/>
+                                        <xs:element name="VentoForte" type="xs:boolean"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                            <xs:element name="Temperatura">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Maxima" type="xs:decimal"/>
+                                        <xs:element name="Minima" type="xs:decimal"/>
+                                        <xs:element name="Media" type="xs:decimal"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                            <xs:element name="Vento">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="VelocidadeMaxima" type="xs:decimal"/>
+                                        <xs:element name="RajadaMaxima" type="xs:decimal"/>
+                                        <xs:element name="Direcao" type="xs:integer"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                            <xs:element name="Atmosfera">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="PrecipitacaoSoma" type="xs:decimal" minOccurs="0"/>
+                                        <xs:element name="PrecipitacaoHoras" type="xs:decimal" minOccurs="0"/>
+                                        <xs:element name="Pressao" type="xs:decimal" minOccurs="0"/>
+                                        <xs:element name="Radiacao" type="xs:decimal" minOccurs="0"/>
+                                        <xs:element name="Insolacao" type="xs:decimal" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-
-                <xs:element name="Vento">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="VelocidadeMaxima" type="xs:decimal"/> <xs:element name="RajadaMaxima" type="xs:decimal"/>     <xs:element name="Direcao" type="xs:integer"/>          </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="Precipitacao" type="xs:decimal"/> <xs:element name="PressaoAtmosferica" type="xs:decimal" minOccurs="0"/> <xs:element name="Radiacao" type="xs:decimal" minOccurs="0"/> <xs:element name="Insolacao" type="xs:decimal" minOccurs="0"/> </xs:sequence>
+            </xs:sequence>
         </xs:complexType>
     </xs:element>
 

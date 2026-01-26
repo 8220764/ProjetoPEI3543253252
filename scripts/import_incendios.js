@@ -12,13 +12,11 @@ const CSV_LOCALIZACAO = path.join(DATA_DIR, 'localizacao.csv');
 const CSV_METEO = path.join(DATA_DIR, 'metereologia.csv');
 const CSV_CAUSA = path.join(DATA_DIR, 'causa.csv');
 
-// --- NOVO: Caminho para o ficheiro de Bombeiros ---
 const CSV_BOMBEIROS = path.join(DATA_DIR, 'bombeiros.csv'); 
 
-// --- Função Auxiliar: Carregar Localizações ---
 async function carregarLocalizacoes() {
     const mapa = new Map();
-    console.log("📍 A carregar localizacoes...");
+    console.log(" A carregar localizacoes...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_LOCALIZACAO)
             .pipe(csv())
@@ -37,7 +35,7 @@ async function carregarLocalizacoes() {
 // --- Função Auxiliar: Carregar Causas ---
 async function carregarCausas() {
     const mapa = new Map();
-    console.log("🔥 A carregar causas...");
+    console.log(" A carregar causas...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_CAUSA)
             .pipe(csv())
@@ -56,7 +54,7 @@ async function carregarCausas() {
 // --- Função Auxiliar: Carregar Meteorologia (Computed Pattern) ---
 async function carregarMeteorologia() {
     const mapa = new Map();
-    console.log("🌦️ A carregar meteorologia para memória...");
+    console.log(" A carregar meteorologia para memória...");
     
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_METEO)
@@ -74,7 +72,7 @@ async function carregarMeteorologia() {
                 }
             })
             .on('end', () => {
-                console.log(`✅ ${mapa.size} registos de meteorologia carregados.`);
+                console.log(` ${mapa.size} registos de meteorologia carregados.`);
                 resolve(mapa);
             })
             .on('error', reject);
@@ -84,7 +82,7 @@ async function carregarMeteorologia() {
 // --- NOVO: Carregar Recursos de Bombeiros (Computed Pattern) ---
 async function carregarRecursosBombeiros() {
     const mapa = new Map(); // Chave: CONCELHO, Valor: Quantidade de Meios
-    console.log("🚒 A contar meios de combate por concelho...");
+    console.log(" A contar meios de combate por concelho...");
     
     return new Promise((resolve, reject) => {
         fs.createReadStream(CSV_BOMBEIROS)
@@ -99,7 +97,7 @@ async function carregarRecursosBombeiros() {
                 }
             })
             .on('end', () => {
-                console.log(`✅ Recursos mapeados para ${mapa.size} concelhos.`);
+                console.log(` Recursos mapeados para ${mapa.size} concelhos.`);
                 resolve(mapa);
             })
             .on('error', reject);
@@ -111,18 +109,18 @@ async function importarIncendios() {
         await mongoose.connect(config.uri, { dbName: config.dbName });
         console.log("🔌 Ligado ao MongoDB.");
 
-        // --- ALTERADO: Agora carregamos também os bombeiros ---
+        
         const [locMap, causaMap, meteoMap, bombeirosMap] = await Promise.all([
             carregarLocalizacoes(),
             carregarCausas(),
             carregarMeteorologia(),
-            carregarRecursosBombeiros() // <--- Chamada nova
+            carregarRecursosBombeiros() 
         ]);
         
         const listaParaInserir = [];
         let contagemErros = 0;
 
-        console.log("🚀 A processar incendios e a aplicar Computed Pattern (Meteo + Bombeiros)...");
+        console.log(" A processar incendios e a aplicar Computed Pattern (Meteo + Bombeiros)...");
 
         fs.createReadStream(CSV_INCENDIOS)
             .pipe(csv())
@@ -134,27 +132,19 @@ async function importarIncendios() {
                     const dataBase = new Date(row.data);
                     if (row.hora) dataBase.setHours(parseInt(row.hora, 10));
 
-                    // --- Prepara dados Computed ---
                     let dadosMeteo = null;
-                    let totalBombeiros = 0; // Default se não houver bombeiros
+                    let totalBombeiros = 0; 
 
                     if (loc && loc.Concelho) {
                         const concelhoNormalizado = loc.Concelho.toUpperCase();
-
-                        // 1. Meteorologia
                         const anoStr = dataBase.getFullYear();
                         const mesStr = String(dataBase.getMonth() + 1).padStart(2, '0');
                         const diaStr = String(dataBase.getDate()).padStart(2, '0');
                         
                         const chaveMeteo = `${anoStr}${mesStr}${diaStr}_${concelhoNormalizado}`;
                         dadosMeteo = meteoMap.get(chaveMeteo);
-
-                        // 2. Bombeiros (NOVO)
-                        // Vai buscar o total de meios fixos para este concelho
                         totalBombeiros = bombeirosMap.get(concelhoNormalizado) || 0;
                     }
-                    // -----------------------------
-
                     const duracao = parseFloat(row.duracao_hours || 0);
                     const areaTotal = parseFloat(row.areaTotal_ha || 0);
                     
@@ -172,21 +162,15 @@ async function importarIncendios() {
                             Concelho: loc ? loc.Concelho : 'Desconhecido',
                             Freguesia: loc ? loc.Freguesia : 'Desconhecido'
                         },
-                        
-                        // Computed Pattern: Meteorologia
                         DadosMeteo: dadosMeteo ? {
                             VelocidadeVento: dadosMeteo.VelocidadeVento,
                             Temperatura: dadosMeteo.Temperatura,
                             DiaSeco: dadosMeteo.DiaSeco,
                             VentoForte: dadosMeteo.VentoForte
                         } : null,
-
-                        // --- NOVO: Computed Pattern: Recursos Locais ---
                         RecursosLocais: {
                             TotalMeios: totalBombeiros
                         },
-                        // -----------------------------------------------
-
                         Areas: {
                             Total: areaTotal,
                             Povoamento: parseFloat(row.areaPov_ha || 0),
@@ -206,25 +190,22 @@ async function importarIncendios() {
                 }
             })
             .on('end', async () => {
-                if (listaParaInserir.length > 0) {
-                    // Dica: Limpar coleção antiga antes de inserir
-                    // await Incendio.deleteMany({});
-                    
+                if (listaParaInserir.length > 0) {   
                     const lote = 1000;
                     for (let i = 0; i < listaParaInserir.length; i += lote) {
                         const chunk = listaParaInserir.slice(i, i + lote);
                         try {
                             await Incendio.insertMany(chunk, { ordered: false });
                         } catch (e) {}
-                        console.log(`💾 Guardados ${Math.min(i + lote, listaParaInserir.length)}`);
+                        console.log(` Guardados ${Math.min(i + lote, listaParaInserir.length)}`);
                     }
-                    console.log("✅ Importação concluída com Sucesso!");
+                    console.log(" Importação concluída com Sucesso!");
                 }
                 mongoose.connection.close();
             });
 
     } catch (error) {
-        console.error("❌ Erro fatal:", error);
+        console.error(" Erro fatal:", error);
         mongoose.connection.close();
     }
 }

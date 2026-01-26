@@ -19,3 +19,40 @@ exports.listarTodas = async (req, res) => {
         res.status(500).json({ erro: error.message });
     }
 };
+// POST: Criar nova Localização
+exports.criar = async (req, res) => {
+    try {
+        let dadosRecebidos = req.body;
+
+       
+        if (req.body.CatalogoLocalizacoes && req.body.CatalogoLocalizacoes.Localizacao) {
+            dadosRecebidos = req.body.CatalogoLocalizacoes.Localizacao;
+        }
+
+       
+        if (Array.isArray(dadosRecebidos)) {
+            dadosRecebidos = dadosRecebidos[0];
+        }
+
+       
+        const novaLocalizacaoDados = {
+          
+            Id: dadosRecebidos.id_localizacao || dadosRecebidos.Id,
+            Distrito: dadosRecebidos.distrito || dadosRecebidos.Distrito,
+            Concelho: dadosRecebidos.concelho || dadosRecebidos.Concelho,
+            Freguesia: dadosRecebidos.freguesia || dadosRecebidos.Freguesia
+        };
+
+        const novaLocalizacao = new Localizacao(novaLocalizacaoDados);
+        await novaLocalizacao.save();
+
+        res.status(201).json({
+            mensagem: "Localização criada com sucesso!",
+            dados: novaLocalizacao
+        });
+
+    } catch (error) {
+        console.error("Erro Localizacao:", error);
+        res.status(400).json({ erro: "Erro ao criar localização", detalhe: error.message });
+    }
+};

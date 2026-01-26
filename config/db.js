@@ -1,4 +1,4 @@
 module.exports = {
-    uri: "mongodb+srv://admin:admin@pei.zuqqhtt.mongodb.net/",
+    uri: "mongodb+srv://8220399_db_user:admin@pei.zuqqhtt.mongodb.net/",
     dbName: "Wildfire"
 };
